@@ -1,6 +1,6 @@
 # Temperature Converter
 
-A simple utlity to convert temperatures between Celsius, Fahrenheit and Kelvin.
+A simple utility to convert temperatures between Celsius, Fahrenheit and Kelvin.
 
 ## Usage
 
@@ -11,13 +11,13 @@ convert(100, "celsius", "fahrenheit")  # 212.0
 convert(0, "celsius", "kelvin")        # 273.15
 ```
 
-## Instalation
+## Installation
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Runing tests
+## Running tests
 
 ```bash
 pytest
