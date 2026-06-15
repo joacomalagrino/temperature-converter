@@ -1,5 +1,6 @@
 import pytest
 
+import cli
 from converter import SCALES, convert
 
 
@@ -21,6 +22,12 @@ from converter import SCALES, convert
         # Fahrenheit <-> Kelvin
         (32, "fahrenheit", "kelvin", 273.15),
         (273.15, "kelvin", "fahrenheit", 32.0),
+        # Rankine (Fahrenheit-based absolute scale)
+        (0, "celsius", "rankine", 491.67),
+        (100, "celsius", "rankine", 671.67),
+        (0, "rankine", "kelvin", 0.0),  # absolute zero
+        (491.67, "rankine", "fahrenheit", 32.0),
+        (671.67, "rankine", "celsius", 100.0),
     ],
 )
 def test_known_conversions(value, from_scale, to_scale, expected):
@@ -54,11 +61,27 @@ def test_scale_names_are_case_insensitive():
 @pytest.mark.parametrize(
     "from_scale, to_scale",
     [
-        ("rankine", "celsius"),
-        ("celsius", "rankine"),
+        ("newton", "celsius"),
+        ("celsius", "newton"),
         ("", "kelvin"),
     ],
 )
 def test_unknown_scale_raises_value_error(from_scale, to_scale):
     with pytest.raises(ValueError):
         convert(0, from_scale, to_scale)
+
+
+def test_cli_prints_result(capsys):
+    cli.main(["100", "celsius", "fahrenheit"])
+    assert capsys.readouterr().out.strip() == "212.0"
+
+
+def test_cli_tidies_floating_point_noise(capsys):
+    cli.main(["0", "celsius", "rankine"])
+    assert capsys.readouterr().out.strip() == "491.67"
+
+
+def test_cli_unknown_scale_exits_with_code_2():
+    with pytest.raises(SystemExit) as exc_info:
+        cli.main(["0", "newton", "celsius"])
+    assert exc_info.value.code == 2

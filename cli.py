@@ -24,7 +24,9 @@ def main(argv=None):
     except ValueError as exc:
         parser.error(str(exc))
 
-    print(result)
+    # Round for display to avoid floating-point noise (e.g. 491.6699999996).
+    # The library keeps full precision; only the printed value is tidied up.
+    print(round(result, 6))
 
 
 if __name__ == "__main__":
