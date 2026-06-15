@@ -1,0 +1,2 @@
+# Test runner. The converter itself uses only the Python standard library.
+pytest>=8.0
