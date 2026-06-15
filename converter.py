@@ -1,4 +1,4 @@
-SCALES = ("celsius", "fahrenheit", "kelvin", "rankine")
+SCALES = ("celsius", "fahrenheit", "kelvin", "rankine", "reaumur", "newton")
 
 
 def convert(value: float, from_scale: str, to_scale: str) -> float:
@@ -19,6 +19,10 @@ def convert(value: float, from_scale: str, to_scale: str) -> float:
         celsius = value - 273.15
     elif from_scale == "rankine":
         celsius = value * 5 / 9 - 273.15
+    elif from_scale == "reaumur":
+        celsius = value * 5 / 4
+    elif from_scale == "newton":
+        celsius = value * 100 / 33
     else:
         celsius = value
 
@@ -29,5 +33,9 @@ def convert(value: float, from_scale: str, to_scale: str) -> float:
         return celsius + 273.15
     elif to_scale == "rankine":
         return (celsius + 273.15) * 9 / 5
+    elif to_scale == "reaumur":
+        return celsius * 4 / 5
+    elif to_scale == "newton":
+        return celsius * 33 / 100
     else:
         return celsius

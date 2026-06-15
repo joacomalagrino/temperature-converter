@@ -28,6 +28,14 @@ from converter import SCALES, convert
         (0, "rankine", "kelvin", 0.0),  # absolute zero
         (491.67, "rankine", "fahrenheit", 32.0),
         (671.67, "rankine", "celsius", 100.0),
+        # Réaumur (water boils at 80 degrees)
+        (100, "celsius", "reaumur", 80.0),
+        (80, "reaumur", "celsius", 100.0),
+        (0, "reaumur", "fahrenheit", 32.0),
+        # Newton (water boils at 33 degrees)
+        (100, "celsius", "newton", 33.0),
+        (33, "newton", "celsius", 100.0),
+        (0, "newton", "kelvin", 273.15),
     ],
 )
 def test_known_conversions(value, from_scale, to_scale, expected):
@@ -45,6 +53,8 @@ def test_same_scale_returns_value_unchanged(scale):
         (123.45, "celsius", "fahrenheit"),
         (-17.8, "fahrenheit", "kelvin"),
         (300, "kelvin", "celsius"),
+        (50, "reaumur", "newton"),
+        (20, "newton", "rankine"),
     ],
 )
 def test_round_trip_is_lossless(value, from_scale, to_scale):
@@ -61,8 +71,8 @@ def test_scale_names_are_case_insensitive():
 @pytest.mark.parametrize(
     "from_scale, to_scale",
     [
-        ("newton", "celsius"),
-        ("celsius", "newton"),
+        ("bogus", "celsius"),
+        ("celsius", "bogus"),
         ("", "kelvin"),
     ],
 )
@@ -83,5 +93,5 @@ def test_cli_tidies_floating_point_noise(capsys):
 
 def test_cli_unknown_scale_exits_with_code_2():
     with pytest.raises(SystemExit) as exc_info:
-        cli.main(["0", "newton", "celsius"])
+        cli.main(["0", "bogus", "celsius"])
     assert exc_info.value.code == 2
