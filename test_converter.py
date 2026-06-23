@@ -95,3 +95,51 @@ def test_cli_unknown_scale_exits_with_code_2():
     with pytest.raises(SystemExit) as exc_info:
         cli.main(["0", "bogus", "celsius"])
     assert exc_info.value.code == 2
+
+
+# --- Input validation tests ---
+
+
+@pytest.mark.parametrize("bad_value", ["25", None, [], True, False])
+def test_non_numeric_input_raises_value_error(bad_value):
+    """Non-numeric inputs (including bool) must raise ValueError, not TypeError."""
+    with pytest.raises(ValueError):
+        convert(bad_value, "celsius", "fahrenheit")
+
+
+@pytest.mark.parametrize("bad_value", [float("nan"), float("inf"), float("-inf")])
+def test_non_finite_input_raises_value_error(bad_value):
+    """NaN and Inf must raise ValueError."""
+    with pytest.raises(ValueError):
+        convert(bad_value, "celsius", "fahrenheit")
+
+
+@pytest.mark.parametrize(
+    "value, from_scale",
+    [
+        (-274, "celsius"),
+        (-274.0, "celsius"),
+        (-1000, "celsius"),
+        (-459.68, "fahrenheit"),   # ≈ -273.16 °C, just below absolute zero
+        (-1, "kelvin"),
+        (-1, "rankine"),
+        (-274, "reaumur"),
+        (-91, "newton"),
+    ],
+)
+def test_below_absolute_zero_raises_value_error(value, from_scale):
+    """Temperatures below absolute zero must raise ValueError."""
+    with pytest.raises(ValueError):
+        convert(value, from_scale, "kelvin")
+
+
+def test_absolute_zero_celsius_is_valid():
+    """-273.15 °C is exactly absolute zero and must NOT raise."""
+    result = convert(-273.15, "celsius", "kelvin")
+    assert result == pytest.approx(0.0)
+
+
+def test_absolute_zero_kelvin_is_valid():
+    """0 K is exactly absolute zero and must NOT raise."""
+    result = convert(0, "kelvin", "celsius")
+    assert result == pytest.approx(-273.15)

@@ -7,8 +7,8 @@ from converter import SCALES, convert
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        prog="convert",
-        description="Convert a temperature between Celsius, Fahrenheit and Kelvin.",
+        prog="tempconv",
+        description="Convert a temperature between any of the six supported scales.",
     )
     parser.add_argument("value", type=float, help="Temperature value to convert")
     parser.add_argument(
