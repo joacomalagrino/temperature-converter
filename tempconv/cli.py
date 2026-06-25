@@ -2,7 +2,7 @@
 
 import argparse
 
-from converter import SCALES, convert
+from .converter import SCALES, convert
 
 
 def main(argv=None):

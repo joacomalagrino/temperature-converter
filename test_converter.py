@@ -1,7 +1,7 @@
 import pytest
 
-import cli
-from converter import SCALES, convert
+from tempconv import SCALES, convert
+from tempconv import cli
 
 
 # Known reference points: water freezing and boiling at 1 atm.
