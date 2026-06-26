@@ -2,6 +2,7 @@
 
 import argparse
 
+from . import __version__
 from .converter import SCALES, convert
 
 
@@ -9,6 +10,11 @@ def main(argv=None):
     parser = argparse.ArgumentParser(
         prog="tempconv",
         description="Convert a temperature between any of the six supported scales.",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
     )
     parser.add_argument("value", type=float, help="Temperature value to convert")
     parser.add_argument(

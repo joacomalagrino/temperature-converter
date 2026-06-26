@@ -1,5 +1,8 @@
+from importlib.metadata import version
+
 import pytest
 
+import tempconv
 from tempconv import SCALES, convert
 from tempconv import cli
 
@@ -143,3 +146,19 @@ def test_absolute_zero_kelvin_is_valid():
     """0 K is exactly absolute zero and must NOT raise."""
     result = convert(0, "kelvin", "celsius")
     assert result == pytest.approx(-273.15)
+
+
+# --- Version exposure tests ---
+
+
+def test_package_exposes_version():
+    """tempconv.__version__ matches the installed package metadata."""
+    assert tempconv.__version__ == version("temperature-converter")
+
+
+def test_cli_version_flag(capsys):
+    """`tempconv --version` prints the version and exits with code 0."""
+    with pytest.raises(SystemExit) as exc_info:
+        cli.main(["--version"])
+    assert exc_info.value.code == 0
+    assert capsys.readouterr().out.strip() == f"tempconv {tempconv.__version__}"
