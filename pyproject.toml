@@ -12,17 +12,32 @@ license = { text = "MIT" }
 authors = [{ name = "joacomalagrino" }]
 keywords = ["temperature", "celsius", "fahrenheit", "kelvin", "rankine", "reaumur", "newton", "converter"]
 classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Utilities",
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
 
+[project.urls]
+Homepage = "https://github.com/joacomalagrino/temperature-converter"
+Repository = "https://github.com/joacomalagrino/temperature-converter"
+Changelog = "https://github.com/joacomalagrino/temperature-converter/blob/master/CHANGELOG.md"
+
 [project.scripts]
 # `convert` would clash with ImageMagick's binary, so the command is `tempconv`.
-tempconv = "cli:main"
+tempconv = "tempconv.cli:main"
 
 [tool.setuptools]
-py-modules = ["converter", "cli"]
+packages = ["tempconv"]
+
+[tool.setuptools.package-data]
+tempconv = ["py.typed"]
