@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `tempconv --version` flag and `tempconv.__version__`, single-sourced from the
+  installed package metadata.
+
+### Changed
+- Restructured into the real `tempconv` package and hardened packaging.
+- Input validation: non-numeric, non-finite (NaN/Inf) and below-absolute-zero
+  values now raise `ValueError` with clear messages.
+
 ## [0.2.0] - 2026-06-15
 
 ### Added
@@ -25,5 +36,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - README typos.
 - Added the `requirements.txt` referenced by the install instructions.
 
+[Unreleased]: https://github.com/joacomalagrino/temperature-converter/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/joacomalagrino/temperature-converter/releases/tag/v0.2.0
 [0.1.0]: https://github.com/joacomalagrino/temperature-converter/releases/tag/v0.1.0
