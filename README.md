@@ -28,6 +28,8 @@ tempconv 32 fahrenheit kelvin     # 273.15
 
 Scale names are case-insensitive. Valid scales: `celsius`, `fahrenheit`, `kelvin`, `rankine`, `reaumur`, `newton`.
 
+Use `tempconv --version` to print the installed version.
+
 ## Development
 
 ```bash

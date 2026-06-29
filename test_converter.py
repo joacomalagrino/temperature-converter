@@ -148,6 +148,34 @@ def test_absolute_zero_kelvin_is_valid():
     assert result == pytest.approx(-273.15)
 
 
+@pytest.mark.parametrize("scale", SCALES)
+def test_same_scale_below_absolute_zero_raises(scale):
+    """Identity conversions must still reject values below absolute zero.
+
+    Covers the early-return branch in ``convert`` where ``from == to``; a
+    physically impossible temperature must raise even when no real conversion
+    happens.
+    """
+    with pytest.raises(ValueError):
+        convert(-1000, scale, scale)
+
+
+@pytest.mark.parametrize(
+    "scale, abs_zero",
+    [
+        ("celsius", -273.15),
+        ("kelvin", 0.0),
+        ("fahrenheit", -459.67),
+        ("rankine", 0.0),
+        ("reaumur", -218.52),
+        ("newton", -90.1395),
+    ],
+)
+def test_absolute_zero_per_scale_is_valid(scale, abs_zero):
+    """Each scale's exact absolute-zero point converts to 0 K without raising."""
+    assert convert(abs_zero, scale, "kelvin") == pytest.approx(0.0, abs=1e-9)
+
+
 # --- Version exposure tests ---
 
 
