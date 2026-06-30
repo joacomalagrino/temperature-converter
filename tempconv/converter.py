@@ -58,14 +58,21 @@ def convert(value: float, from_scale: str, to_scale: str) -> float:
 
     # Convert from Celsius to target
     if to_scale == "fahrenheit":
-        return celsius * 9 / 5 + 32
+        result = celsius * 9 / 5 + 32
     elif to_scale == "kelvin":
-        return celsius + 273.15
+        result = celsius + 273.15
     elif to_scale == "rankine":
-        return (celsius + 273.15) * 9 / 5
+        result = (celsius + 273.15) * 9 / 5
     elif to_scale == "reaumur":
-        return celsius * 4 / 5
+        result = celsius * 4 / 5
     elif to_scale == "newton":
-        return celsius * 33 / 100
+        result = celsius * 33 / 100
     else:
-        return celsius
+        result = celsius
+
+    if not math.isfinite(result):
+        raise ValueError(
+            f"conversion of {value} {from_scale} to {to_scale} overflowed "
+            "to a non-finite number"
+        )
+    return result

@@ -176,6 +176,23 @@ def test_absolute_zero_per_scale_is_valid(scale, abs_zero):
     assert convert(abs_zero, scale, "kelvin") == pytest.approx(0.0, abs=1e-9)
 
 
+# --- Overflow regression test ---
+
+
+@pytest.mark.parametrize(
+    "value, from_scale, to_scale",
+    [
+        (1e308, "celsius", "rankine"),       # (c + 273.15) * 9/5 overflows
+        (1.5e308, "celsius", "fahrenheit"),  # c * 9/5 + 32 overflows
+        (1e308, "kelvin", "rankine"),        # overflows via the rankine factor
+    ],
+)
+def test_finite_input_overflowing_to_inf_raises_value_error(value, from_scale, to_scale):
+    """A finite input that overflows to inf must raise, not return inf silently."""
+    with pytest.raises(ValueError):
+        convert(value, from_scale, to_scale)
+
+
 # --- Non-string scale regression test ---
 
 
