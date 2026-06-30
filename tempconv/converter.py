@@ -27,6 +27,12 @@ def convert(value: float, from_scale: str, to_scale: str) -> float:
     if not math.isfinite(value):
         raise ValueError(f"value must be a finite number, got {value!r}")
 
+    if not isinstance(from_scale, str) or not isinstance(to_scale, str):
+        raise ValueError(
+            "from_scale and to_scale must be strings, got "
+            f"{type(from_scale).__name__!r} and {type(to_scale).__name__!r}"
+        )
+
     from_scale = from_scale.lower()
     to_scale = to_scale.lower()
 
@@ -52,14 +58,21 @@ def convert(value: float, from_scale: str, to_scale: str) -> float:
 
     # Convert from Celsius to target
     if to_scale == "fahrenheit":
-        return celsius * 9 / 5 + 32
+        result = celsius * 9 / 5 + 32
     elif to_scale == "kelvin":
-        return celsius + 273.15
+        result = celsius + 273.15
     elif to_scale == "rankine":
-        return (celsius + 273.15) * 9 / 5
+        result = (celsius + 273.15) * 9 / 5
     elif to_scale == "reaumur":
-        return celsius * 4 / 5
+        result = celsius * 4 / 5
     elif to_scale == "newton":
-        return celsius * 33 / 100
+        result = celsius * 33 / 100
     else:
-        return celsius
+        result = celsius
+
+    if not math.isfinite(result):
+        raise ValueError(
+            f"conversion of {value} {from_scale} to {to_scale} overflowed "
+            "to a non-finite number"
+        )
+    return result
