@@ -176,6 +176,18 @@ def test_absolute_zero_per_scale_is_valid(scale, abs_zero):
     assert convert(abs_zero, scale, "kelvin") == pytest.approx(0.0, abs=1e-9)
 
 
+# --- Non-string scale regression test ---
+
+
+@pytest.mark.parametrize("bad_scale", [123, None, 1.0, ["celsius"], object()])
+def test_non_string_scale_raises_value_error(bad_scale):
+    """A non-string scale must raise ValueError, not AttributeError."""
+    with pytest.raises(ValueError):
+        convert(0, bad_scale, "celsius")
+    with pytest.raises(ValueError):
+        convert(0, "celsius", bad_scale)
+
+
 # --- Version exposure tests ---
 
 

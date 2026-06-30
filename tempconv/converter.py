@@ -27,6 +27,12 @@ def convert(value: float, from_scale: str, to_scale: str) -> float:
     if not math.isfinite(value):
         raise ValueError(f"value must be a finite number, got {value!r}")
 
+    if not isinstance(from_scale, str) or not isinstance(to_scale, str):
+        raise ValueError(
+            "from_scale and to_scale must be strings, got "
+            f"{type(from_scale).__name__!r} and {type(to_scale).__name__!r}"
+        )
+
     from_scale = from_scale.lower()
     to_scale = to_scale.lower()
 
